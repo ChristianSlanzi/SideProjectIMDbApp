@@ -82,3 +82,26 @@ extension UIImageView {
         return task
     }
 }
+
+extension URL {
+    func imdbOriginalUrl() -> URL? {
+        var path = "https://imdb-api.com/images/original/" + self.lastPathComponent
+        guard let index = path.range(of: "._V1") else {
+            return nil
+        }
+        path = path.substring(to: index.lowerBound)
+        path.append("._V1_Ratio0.6791_AL_.jpg")
+        
+        return URL(string: path)
+    }
+    func imdb192x264Url() -> URL? {
+        var path = "https://imdb-api.com/images/192x264/" + self.lastPathComponent
+        guard let index = path.range(of: "._V1") else {
+            return nil
+        }
+        path = path.substring(to: index.lowerBound)
+        path.append("._V1_Ratio0.6791_AL_.jpg")
+        
+        return URL(string: path)
+    }
+}
