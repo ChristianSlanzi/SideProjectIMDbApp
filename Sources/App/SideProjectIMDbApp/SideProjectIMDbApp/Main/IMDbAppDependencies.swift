@@ -42,6 +42,8 @@ class IMDbAppDependencies {
         return IMDbApiService(baseURL: URL(string: "https://imdb-api.com")!, client: client, apiKey: apiKey)
     }()
     
+    private var imageObjects = [Item]()
+    
     private lazy var imdbManager: IMDbManagerProtocol = {
         return IMDbManager(service: service)
     }()

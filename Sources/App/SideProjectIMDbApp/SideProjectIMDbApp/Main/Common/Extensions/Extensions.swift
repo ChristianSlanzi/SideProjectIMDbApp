@@ -60,6 +60,22 @@ extension UIImage {
 }
 
 extension UIImageView {
+    
+    /*
+    func downloadImage(fromURL url:URL) -> URLSessionDataTask? {
+        let item = Item(image: UIImage(systemName: "rectangle")!, url: url)
+        return ImageCache.publicCache.load(url: url as NSURL, item: item) { [weak self] (fetchedItem, image)  in
+            if let img = image, img != fetchedItem.image {
+                item.image = img
+            }
+            
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                strongSelf.image = image
+            }
+        }
+    }*/
+    
     func downloadImage(fromURL url:URL) -> URLSessionDataTask {
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             
@@ -76,6 +92,7 @@ extension UIImageView {
             
             DispatchQueue.main.async {
                 strongSelf.image = image
+                ImageCaching.publicCache.chacheImage(image, url: url)
             }
         }
         task.resume()

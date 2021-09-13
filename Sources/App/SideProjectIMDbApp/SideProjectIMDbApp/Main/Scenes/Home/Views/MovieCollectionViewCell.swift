@@ -49,16 +49,26 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.text = nil
         task?.cancel()
         task = nil
+        label.text = nil
         imageView.image = nil
+        //
     }
     
     func configure(with viewModel: MovieCollectionViewCellViewModel) {
         label.text = viewModel.title
-        guard let url = viewModel.artworkURL?.imdb192x264Url() else { return }
+        guard let url = viewModel.artworkURL?.imdb192x264Url() else {
+            return
+        }
         //guard let url = viewModel.artworkURL?.imdbOriginalUrl() else { return }
+        
+        if let cachedImage = ImageCaching.publicCache.image(url: url) {
+            DispatchQueue.main.async {
+                self.imageView.image = cachedImage
+            }
+            return
+        }
         task = imageView.downloadImage(fromURL: url)
     }
 }
